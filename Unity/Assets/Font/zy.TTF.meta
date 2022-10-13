@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0b37a4515b3c5204ba730e378c7a1ea4
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: FZZongYi-M05S
+  fontNames:
+  - FZZongYi-M05S
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: font/ttf/zy.unity3d
+  assetBundleVariant: 

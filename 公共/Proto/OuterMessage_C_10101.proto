@@ -1,0 +1,140 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType CreateRoleResponse
+message CreateRoleRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int32 RoleId = 1; 
+}
+
+message CreateRoleResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message EnterZoneResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  string Address = 1; 
+  int64 GateKey = 2; 
+}
+
+//ResponseType EnterZoneResponse
+message EnterZoneRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int32 Zone = 1; 
+  string Account = 2; 
+}
+
+//ResponseType LoginResponse
+message LoginRequest // IRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; // 帐号
+  string Password = 2; // 密码
+}
+
+message LoginResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType LoginGateResponse
+message LoginGateRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; // 帐号
+  int64 GateId = 2; 
+}
+
+message LoginGateResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 PlayerId = 1; 
+}
+
+//ResponseType RegistResponse
+message RegistRequest // IRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; // 帐号
+  string Password = 2; // 密码
+}
+
+message RegistResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType RoleListResponse
+message RoleListRequest // IRequest
+{
+  int32 RpcId = 90; 
+}
+
+message RoleListResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  repeated SimpleUnit Units = 1; 
+}
+
+//ResponseType SelectRoleResponse
+message SelectRoleRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int64 UnitId = 1; 
+}
+
+message SelectRoleResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message SimpleUnit
+{
+  int64 UnitId = 1; 
+  int32 Level = 2; 
+  string Name = 3; 
+}
+
+message ZoneInfo
+{
+  int32 Zone = 1; 
+  int32 State = 2; 
+  string RoleName = 3; 
+  int32 RoleLevel = 4; 
+  int32 PlayerCount = 5; 
+}
+
+//ResponseType ZoneListResponse
+message ZoneListRequest // IRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+}
+
+message ZoneListResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  repeated ZoneInfo OnlineZones = 1; 
+  repeated int32 LatestEnterZones = 2; // 最近登录
+}
+

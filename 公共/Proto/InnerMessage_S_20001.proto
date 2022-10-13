@@ -1,0 +1,143 @@
+syntax = "proto3";
+package ET;
+
+message A2M_ReloadAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType G2G_LockAResponse
+message G2G_LockARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Id = 1; 
+  string Address = 2; 
+}
+
+message G2G_LockAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType G2G_LockReleaseAResponse
+message G2G_LockReleaseARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Id = 1; 
+  string Address = 2; 
+}
+
+message G2G_LockReleaseAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message G2M_SessionDisconnectALMessage // IActorLocationMessage
+{
+  int32 RpcId = 90; 
+}
+
+message G2R_KickOutPlayerAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message ObjectAddAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType ObjectAddAResponse
+message ObjectAddARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+  int64 InstanceId = 2; 
+}
+
+//ResponseType ObjectGetAResponse
+message ObjectGetARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+}
+
+message ObjectGetAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 InstanceId = 1; 
+}
+
+//ResponseType ObjectLockAResponse
+message ObjectLockARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+  int64 InstanceId = 2; 
+  int32 Time = 3; 
+}
+
+message ObjectLockAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType ObjectQueryAResponse
+message ObjectQueryARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  string CollectionName = 1; // 数据集名称
+  int64 InstanceId = 2; 
+}
+
+//ResponseType ObjectRemoveAResponse
+message ObjectRemoveARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+}
+
+message ObjectRemoveAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message ObjectUnLockAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType ObjectUnLockAResponse
+message ObjectUnLockARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+  int64 OldInstanceId = 2; 
+  int64 InstanceId = 3; 
+}
+
+//ResponseType G2R_KickOutPlayerAResponse
+message R2G_KickOutPlayerARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+}
+

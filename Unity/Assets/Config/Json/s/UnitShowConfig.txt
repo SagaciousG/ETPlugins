@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"UnitShowConfig","_id":1001,"Model":"Skeleton","Name":"骷髅","Desc":"一堆描述"},
+{"_t":"UnitShowConfig","_id":1002,"Model":"Skeleton","Name":"骷髅2","Desc":""},
+]}

@@ -1,0 +1,206 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType Actor_TransferALResponse
+message Actor_TransferALRequest // IActorLocationRequest
+{
+  int32 RpcId = 90; 
+  int32 MapIndex = 1; 
+}
+
+message Actor_TransferALResponse // IActorLocationResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType BenchmarkResponse
+message BenchmarkRequest // IRequest
+{
+  int32 RpcId = 90; 
+}
+
+message BenchmarkResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType G2C_EnterMapResponse
+message C2G_EnterMapRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int64 UnitId = 1; 
+}
+
+//ResponseType C2G_EnterZoneResponse
+message C2G_EnterZoneRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int32 Zone = 1; 
+}
+
+message C2G_EnterZoneResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+//ResponseType M2C_ReloadResponse
+message C2M_ReloadRequest // IRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+  string Password = 2; 
+}
+
+message C2M_StopALMessage // IActorLocationMessage
+{
+  int32 RpcId = 90; 
+}
+
+//ResponseType M2C_TestALResponse
+message C2M_TestALRequest // IActorLocationRequest
+{
+  int32 RpcId = 90; 
+  string request = 1; 
+}
+
+//ResponseType M2C_TestRobotCaseALResponse
+message C2M_TestRobotCaseALRequest // IActorLocationRequest
+{
+  int32 RpcId = 90; 
+  int32 N = 1; 
+}
+
+//ResponseType M2C_TransferMapALResponse
+message C2M_TransferMapALRequest // IActorLocationRequest
+{
+  int32 RpcId = 1; 
+}
+
+message G2C_EnterMapResponse // IResponse
+{
+  int32 RpcId = 1; 
+  int32 Error = 2; 
+  string Message = 3; 
+  int64 MyId = 4; // 自己unitId
+}
+
+message G2C_KickOutAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+}
+
+message G2C_TestMessage // IMessage
+{
+}
+
+message G2C_TestHotfixMessage // IMessage
+{
+  string Info = 1; 
+}
+
+message HttpGetRouterResponse
+{
+  repeated string Realms = 1; 
+  repeated string Routers = 2; 
+}
+
+message M2C_CreateMyUnitAMessage // IActorMessage
+{
+  UnitInfo Unit = 1; 
+}
+
+message M2C_CreateUnitsAMessage // IActorMessage
+{
+  repeated UnitInfo Units = 2; 
+}
+
+message M2C_ReloadResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message M2C_RemoveUnitsAMessage // IActorMessage
+{
+  repeated int64 Units = 2; 
+}
+
+message M2C_StopAMessage // IActorMessage
+{
+  int32 Error = 1; 
+  int64 Id = 2; 
+  Unity.Mathematics.float3 Position = 3; 
+  Unity.Mathematics.quaternion Rotation = 4; 
+}
+
+message M2C_TestALResponse // IActorLocationResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  string response = 1; 
+}
+
+message M2C_TestRobotCaseALResponse // IActorLocationResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int32 N = 1; 
+}
+
+message M2C_TransferMapALResponse // IActorLocationResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message MoveInfo
+{
+  repeated Unity.Mathematics.float3 Points = 1; 
+  float A = 4; 
+  float B = 5; 
+  float C = 6; 
+  float W = 7; 
+  int32 TurnSpeed = 8; 
+}
+
+message PingResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 Time = 1; 
+}
+
+//ResponseType PingResponse
+message PingRequest // IRequest
+{
+  int32 RpcId = 90; 
+}
+
+message RouterSync
+{
+  uint32 ConnectId = 1; 
+  string Address = 2; 
+}
+
+message UnitInfo
+{
+  int64 UnitId = 1; 
+  int32 ConfigId = 2; 
+  int32 Type = 3; 
+  Unity.Mathematics.float3 Position = 4; 
+  map<int32,int64> KV = 10; 
+  MoveInfo MoveInfo = 12; 
+  Unity.Mathematics.float3 Forward = 13; 
+}
+

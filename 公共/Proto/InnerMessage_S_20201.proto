@@ -1,0 +1,24 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType G2M_GetSessionKeyAResponse
+message G2M_GetSessionKeyARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int64 UnitId = 1; 
+}
+
+message G2M_GetSessionKeyAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 Key = 1; 
+}
+
+message G2M_RemoveUnitAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+  int64 UnitId = 1; 
+}
+

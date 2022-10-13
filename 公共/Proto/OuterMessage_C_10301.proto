@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ET;
+
+message FindPathALMessage // IActorLocationMessage
+{
+  int32 RpcId = 90; 
+  Unity.Mathematics.float3 Position = 1; 
+}
+
+message FindPathResultAMessage // IActorMessage
+{
+  Unity.Mathematics.float3 Position = 1; 
+  repeated Unity.Mathematics.float3 Points = 2; 
+  int64 unitId = 3; 
+}
+

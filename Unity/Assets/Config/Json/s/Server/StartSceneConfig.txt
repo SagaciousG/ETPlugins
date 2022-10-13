@@ -1,0 +1,14 @@
+{"list":[
+{"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":0,"SceneType":"Realm","Name":"Realm","OuterPort":10200,"DBConnection":"mongodb://127.0.0.1","DBName":"User"},
+{"_t":"StartSceneConfig","_id":2,"Process":1,"Zone":0,"SceneType":"Location","Name":"Location","OuterPort":10201,"DBConnection":"","DBName":""},
+{"_t":"StartSceneConfig","_id":3,"Process":1,"Zone":0,"SceneType":"RouterManager","Name":"RouterManager","OuterPort":10300,"DBConnection":"","DBName":""},
+{"_t":"StartSceneConfig","_id":4,"Process":1,"Zone":0,"SceneType":"Router","Name":"Router1","OuterPort":10301,"DBConnection":"","DBName":""},
+{"_t":"StartSceneConfig","_id":5,"Process":1,"Zone":0,"SceneType":"Router","Name":"Router2","OuterPort":10302,"DBConnection":"","DBName":""},
+{"_t":"StartSceneConfig","_id":6,"Process":1,"Zone":0,"SceneType":"Center","Name":"Center","OuterPort":0,"DBConnection":"mongodb://127.0.0.1","DBName":"User"},
+{"_t":"StartSceneConfig","_id":102,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate","OuterPort":11101,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone1"},
+{"_t":"StartSceneConfig","_id":103,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map","OuterPort":11102,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone1"},
+{"_t":"StartSceneConfig","_id":202,"Process":1,"Zone":2,"SceneType":"Gate","Name":"Gate","OuterPort":11201,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone2"},
+{"_t":"StartSceneConfig","_id":203,"Process":1,"Zone":2,"SceneType":"Map","Name":"Map","OuterPort":11202,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone2"},
+{"_t":"StartSceneConfig","_id":302,"Process":1,"Zone":3,"SceneType":"Gate","Name":"Gate","OuterPort":11301,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone3"},
+{"_t":"StartSceneConfig","_id":303,"Process":1,"Zone":3,"SceneType":"Map","Name":"Map","OuterPort":11302,"DBConnection":"mongodb://127.0.0.1","DBName":"Zone3"},
+]}

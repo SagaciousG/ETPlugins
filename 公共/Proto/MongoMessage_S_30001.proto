@@ -1,0 +1,54 @@
+syntax = "proto3";
+package ET;
+
+message DB_AccountExistAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  string Message = 1; 
+  int32 Error = 2; 
+}
+
+message DB_CreateUnitAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  Unit Unit = 1; 
+}
+
+message DB_GetUnitAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  Unit Unit = 1; 
+}
+
+message DB_LoginAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  string Message = 1; 
+  int32 Error = 2; 
+}
+
+message DB_RegistAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  string Message = 1; 
+  int32 Error = 2; 
+}
+
+message DB_SaveUnitAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+  Unit Unit = 1; 
+}
+
+message ObjectQueryAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  Entity entity = 1; 
+}
+

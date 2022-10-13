@@ -1,0 +1,11 @@
+//自动生成文件，请勿在此编辑
+[USING]
+
+namespace ET.Client
+{
+	[ComponentOf(typeof(UI))]
+	public partial class [NAME]Component : Entity, IAwake
+	{
+[FIELDS]
+	}
+}

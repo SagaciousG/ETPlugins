@@ -1,0 +1,40 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType GetMapSessionKeyResponse
+message GetMapSessionKeyRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int64 UnitId = 1; 
+}
+
+message GetMapSessionKeyResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 MapKey = 1; 
+  string Address = 2; 
+}
+
+//ResponseType LoginInMapSessionResponse
+message LoginInMapSessionRequest // IRequest
+{
+  int32 RpcId = 90; 
+  int64 Key = 1; 
+  int64 UnitId = 2; 
+}
+
+message LoginInMapSessionResponse // IResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+}
+
+message StartSceneChangeAMessage // IActorMessage
+{
+  int32 MapId = 1; 
+  int64 MapActorId = 2; 
+}
+

@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"MapConfig","_id":1001,"Name":"月亮村","IsSecure":1,"SceneName":"yueliangcun","MonsterGroup":0},
+{"_t":"MapConfig","_id":1002,"Name":"断崖","IsSecure":0,"SceneName":"duanya","MonsterGroup":1},
+]}

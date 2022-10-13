@@ -1,0 +1,5 @@
+{"list":[
+{"_t":"ZoneConfig","_id":1,"DBConnection":"mongodb://127.0.0.1","DBName":"ET1","ShowName":"测试一"},
+{"_t":"ZoneConfig","_id":2,"DBConnection":"mongodb://127.0.0.1","DBName":"ET2","ShowName":"测试二"},
+{"_t":"ZoneConfig","_id":3,"DBConnection":"mongodb://127.0.0.1","DBName":"ET3","ShowName":"测试三"},
+]}

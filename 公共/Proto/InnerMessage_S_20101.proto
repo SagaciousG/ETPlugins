@@ -1,0 +1,106 @@
+syntax = "proto3";
+package ET;
+
+message G2C_AddOnlinePlayerAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+  string PlayerAccount = 1; // 玩家账号
+  int64 GateActorId = 2; // 所处Gate服务器
+}
+
+//ResponseType R2C_EnterZoneAResponse
+message R2C_EnterZoneARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  int32 Zone = 1; 
+}
+
+message R2C_EnterZoneAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 ZoneGateActorId = 1; 
+}
+
+message R2C_IsOnlineAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int32 Online = 1; // 在线=1，不在线=0
+  int64 UnitId = 2; // 玩家选择的角色
+}
+
+//ResponseType R2C_IsOnlineAResponse
+message R2C_IsOnlineARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+}
+
+message R2C_RemoveOnlinePlayerAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+  string PlayerAccount = 1; 
+}
+
+//ResponseType R2C_ServerZoneStateAResponse
+message R2C_ServerZoneStateARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+}
+
+message R2C_ServerZoneStateAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  repeated int32 OnlineZones = 1; 
+  repeated int32 PlayerCount = 2; 
+}
+
+message R2C_ZoneStateAMessage // IActorMessage
+{
+  int32 RpcId = 90; 
+  int32 IsOnline = 1; // 0 = 关服，1 = 启服
+  int32 Zone = 2; 
+}
+
+//ResponseType R2G_GetLoginKeyAResponse
+message R2G_GetLoginKeyARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+}
+
+message R2G_GetLoginKeyAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  int64 Key = 1; 
+}
+
+//ResponseType R2G_QueryZonePlayerAResponse
+message R2G_QueryZonePlayerARequest // IActorRequest
+{
+  int32 RpcId = 90; 
+  string Account = 1; 
+}
+
+message R2G_QueryZonePlayerAResponse // IActorResponse
+{
+  int32 RpcId = 90; 
+  int32 Error = 91; 
+  string Message = 92; 
+  repeated ZonePlayer ZonePlayers = 1; 
+}
+
+message ZonePlayer
+{
+  int32 Zone = 1; 
+  string RoleName = 2; 
+  int32 RoleLevel = 3; 
+}
+

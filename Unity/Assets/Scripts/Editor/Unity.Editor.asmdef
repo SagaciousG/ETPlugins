@@ -1,0 +1,22 @@
+{
+    "name": "Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Unity.Mono",
+        "Unity.ThirdParty",
+        "Unity.Core",
+        "Unity.Codes",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

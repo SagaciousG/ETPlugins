@@ -1,0 +1,21 @@
+//自动生成文件，请勿编辑
+[USING]
+
+namespace ET.Client
+{
+	[FriendOf(typeof([NAME]Component))]
+	public static partial class [NAME]ComponentSystem
+	{
+		[ObjectSystem]
+		public class [NAME]ComponentAwakeSystem: AwakeSystem<[NAME]Component>
+		{
+			protected override void Awake([NAME]Component self)
+			{
+				var rc = self.GetParent<UI>().GameObject.GetComponent<UIReferenceCollector>();
+[INIT]
+				
+				self.OnAwake();
+			}
+		}
+	}
+}
