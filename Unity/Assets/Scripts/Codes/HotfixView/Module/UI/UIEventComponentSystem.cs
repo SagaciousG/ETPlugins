@@ -54,7 +54,6 @@ namespace ET.Client
 		
 		public static void OnCreate(this UIEventComponent self, UI ui, string uiType)
 		{
-			((UITopBackComponent)ui.Component).OnCreate();
 			self.UIEvents[uiType].OnCreate(ui);
 		}
 
