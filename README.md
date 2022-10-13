@@ -1,6 +1,8 @@
 # UnityPlugins
 ET版本 7.1 2022-10-07 20:48
 
+因为数据库文件太大，调试工程需要增加数据库
+
 ## 框架内容上的修改
 1.Excel和Proto路径  
 2.使用BundleMaster代替AssetComponent  
