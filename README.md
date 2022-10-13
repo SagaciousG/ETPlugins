@@ -39,4 +39,5 @@ ET版本 7.1 2022-10-07 20:48
 ![image](https://user-images.githubusercontent.com/49907344/195511113-64a0261b-d8f7-4777-9de8-8b42e07c73d8.png)
 
 1.改进了ComponentView可以查看所有属性和字段  
-2.实现TypeDraw扩展更多类型
+2.实现TypeDraw扩展更多类型  
+3.支持Dictionary、list、stack
