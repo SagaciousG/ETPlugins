@@ -1,6 +1,8 @@
 # UnityPlugins
 ET版本 7.1 2022-10-07 20:48
 
+因为数据库文件太大，调试工程需要增加数据库
+
 ## 框架内容上的修改
 1.Excel和Proto路径  
 2.使用BundleMaster代替AssetComponent  
@@ -33,3 +35,9 @@ ET版本 7.1 2022-10-07 20:48
 3.点击“生成脚本”可以生成Component，System，Event三大件，在对应的Ex文件下编辑额外逻辑。  
 ### 5.UGUI
 1.提供一些UI的基础套件（UIList、Popup、PageScroll等）
+### 6.ComponetView
+![image](https://user-images.githubusercontent.com/49907344/195511113-64a0261b-d8f7-4777-9de8-8b42e07c73d8.png)
+
+1.改进了ComponentView可以查看所有属性和字段  
+2.实现TypeDraw扩展更多类型  
+3.支持Dictionary、list、stack
