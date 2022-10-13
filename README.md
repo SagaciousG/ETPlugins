@@ -41,3 +41,6 @@ ET版本 7.1 2022-10-07 20:48
 1.改进了ComponentView可以查看所有属性和字段  
 2.实现TypeDraw扩展更多类型  
 3.支持Dictionary、list、stack
+### 7.NumericTypeEditor
+![image](https://user-images.githubusercontent.com/49907344/195549206-973e480b-8659-4be6-a1c7-2a055460089b.png)
+
