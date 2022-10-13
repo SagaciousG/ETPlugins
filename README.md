@@ -35,3 +35,6 @@ ET版本 7.1 2022-10-07 20:48
 3.点击“生成脚本”可以生成Component，System，Event三大件，在对应的Ex文件下编辑额外逻辑。  
 ### 5.UGUI
 1.提供一些UI的基础套件（UIList、Popup、PageScroll等）
+### 6.ComponetView
+1.改进了ComponentView可以查看所有属性和字段
+2.实现TypeDraw扩展更多类型
