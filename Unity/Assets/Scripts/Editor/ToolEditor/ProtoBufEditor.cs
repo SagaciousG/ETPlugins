@@ -41,14 +41,33 @@ using UnityEngine.UIElements;
     private bool _requireRefresh;
     
 
-    private Dictionary<ProtoMsgType, string[]> _msgType2Keys;
+    private Dictionary<string, string[]> _msgType2Keys;
+
+    private List<string> _protoMsgTypes = new List<string>();
 
     private void OnEnable()
     {
-        this._msgType2Keys = new Dictionary<ProtoMsgType, string[]>();
-        this._msgType2Keys[ProtoMsgType.IActorResponse] = new[] { "int32|Error|91", "string|Message|92" };
-        this._msgType2Keys[ProtoMsgType.IResponse] = new[] { "int32|Error|91", "string|Message|92" };
-        this._msgType2Keys[ProtoMsgType.IActorLocationResponse] = new[] { "int32|Error|91", "string|Message|92" };
+        this._protoMsgTypes.Add("None");
+        this._protoMsgTypes.Add("IMessage");
+        var types = typeof (IMessage).Module.GetTypes();
+        foreach (Type type in types)
+        {
+            if (type.IsInterface)
+            {
+                var interfaces = type.GetInterfaces();
+                if (interfaces.Contains(typeof (IMessage)))
+                {
+                    this._protoMsgTypes.Add(type.Name);
+                }
+            }
+        }
+        
+        
+        this._msgType2Keys = new Dictionary<string, string[]>();
+        this._msgType2Keys[nameof (IActorResponse)]         = new[] { "int32|Error|91", "string|Message|92" };
+        this._msgType2Keys[nameof (IResponse)]              = new[] { "int32|Error|91", "string|Message|92" };
+        this._msgType2Keys[nameof (IActorLocationResponse)] = new[] { "int32|Error|91", "string|Message|92" };
+        this._msgType2Keys[nameof (ICenterResponse)]        = new[] { "int32|Error|91", "string|Message|92" };
         
         this._baseTypes = new List<string>()
         {
@@ -105,7 +124,7 @@ using UnityEngine.UIElements;
             }
             else
             {
-                var list = this.GetTypes(ProtoMsgType.None);
+                var list = this.GetTypes("None");
                 list.AddRange(this._baseTypes);
                 var fIndex = list.IndexOf(field.Type);
                 if (field.Repeated == StructType.Map)
@@ -331,7 +350,7 @@ using UnityEngine.UIElements;
                 }
             }
             
-            GUILayout.Label($"{fileIndex}/{this._findedFiles.Count}", "CenteredLabel", GUILayout.Width(50));
+            GUILayout.Label($"{fileIndex + 1}/{this._findedFiles.Count}", "CenteredLabel", GUILayout.Width(50));
             
             if (GUILayout.Button("→", "Tab onlyOne", GUILayout.Width(40), GUILayout.Height(20)))
             {
@@ -363,7 +382,7 @@ using UnityEngine.UIElements;
                 info.Foldout = !info.Foldout;
                 if (info.Foldout)
                 {
-                    var list = this.GetTypes(ProtoMsgType.None);
+                    var list = this.GetTypes("None");
                     list.AddRange(this._baseTypes);
                     foreach (var field in info.Fields)
                     {
@@ -409,9 +428,15 @@ using UnityEngine.UIElements;
                 
                 info.Name = EditorGUILayout.TextField("Name", info.Name);
                 EditorGUI.BeginChangeCheck();
-                info.MessageType = (ProtoMsgType) EditorGUILayout.EnumPopup("Type", info.MessageType);
+                var typeIndex = this._protoMsgTypes.IndexOf(info.MessageType);
+                typeIndex = EditorGUILayout.Popup("Type", typeIndex, this._protoMsgTypes.ToArray());
+                if (typeIndex == -1)
+                {
+                    info.MessageType = "None";
+                }
                 if (EditorGUI.EndChangeCheck())
                 {
+                    info.MessageType = this._protoMsgTypes[typeIndex];
                     if (this._msgType2Keys.TryGetValue(info.MessageType, out var fields))
                     {
                         foreach (var field in fields)
@@ -431,22 +456,15 @@ using UnityEngine.UIElements;
                     }
                 }
                 
-                if (info.MessageType == ProtoMsgType.IRequest 
-                    || info.MessageType == ProtoMsgType.IActorRequest
-                    || info.MessageType == ProtoMsgType.IActorLocationRequest)
+                if (info.MessageType.EndsWith("Request"))
                 {
-                    List<string> list;
-                    if (info.MessageType == ProtoMsgType.IRequest)
-                        list = this.GetTypes(ProtoMsgType.IResponse);
-                    else if (info.MessageType == ProtoMsgType.IActorRequest)
-                        list = this.GetTypes(ProtoMsgType.IActorResponse);
-                    else
-                        list = this.GetTypes(ProtoMsgType.IActorLocationResponse);
-                    var index = list.IndexOf(info.ResponseType);
+                    string newResponseType = info.MessageType.Replace("Request", "Response");
+                    List<string> list = this.GetTypes(newResponseType);
+                    var index = list.IndexOf(info.ResponseName);
 
                     EditorGUILayout.BeginHorizontal();
                     var predictedName = info.RealName.Replace("Request", "Response");
-                    if (string.IsNullOrEmpty(info.ResponseType))
+                    if (string.IsNullOrEmpty(info.ResponseName))
                         index = list.IndexOf(predictedName);
                     
                     index = EditorGUILayout.Popup("ResponseType", index, list.ToArray());
@@ -457,11 +475,11 @@ using UnityEngine.UIElements;
                             index = list.IndexOf(predictedName);
                         }
                     }
-                    else if (info.ResponseType != predictedName)
+                    else if (info.ResponseName != predictedName)
                     {
                         if (GUILayout.Button($"Create [{predictedName}] in"))
                         {
-                            var msgType = Enum.Parse<ProtoMsgType>(info.MessageType.ToString().Replace("Request", "Response"));
+                            var msgType = newResponseType;
                             this._files[this._fileIndex].ProtoBodyInfos.Add(new ProtoBodyInfo(this._selectInfo)
                             {
                                 MessageType = msgType,
@@ -470,12 +488,19 @@ using UnityEngine.UIElements;
                             });
                         }
                         this._fileIndex = EditorGUILayout.Popup(this._fileIndex, this._files.ToStringArray());
+                    }else if (info.ResponseName == predictedName && index == -1)
+                    {
+                        if (GUILayout.Button($"Change [{predictedName}] Type to [{newResponseType}]"))
+                        {
+                            var bodyInfo = this.Find(predictedName);
+                            bodyInfo.MessageType = newResponseType;
+                        }
                     }
                     
                     EditorGUILayout.EndHorizontal();
                     if (index >= 0)
                     {
-                        info.ResponseType = list[index];
+                        info.ResponseName = list[index];
                     }
                 }
 
@@ -535,14 +560,14 @@ using UnityEngine.UIElements;
             this.DoSearch();
     }
 
-    public List<string> GetTypes(params ProtoMsgType[] types)
+    public List<string> GetTypes(params string[] types)
     {
         var res = new List<string>();
         foreach (ProtoBufFileInfo fileInfo in this._files)
         {
             foreach (var customType in fileInfo.ProtoBodyInfos)
             {
-                foreach (ProtoMsgType type in types)
+                foreach (string type in types)
                 {
                     if (customType.MessageType == type)
                     {
@@ -556,7 +581,23 @@ using UnityEngine.UIElements;
         return res;
     }
 
-    private List<ProtoField> GetDefaultFields(ProtoMsgType type)
+    public ProtoBodyInfo Find(string realName)
+    {
+        foreach (ProtoBufFileInfo fileInfo in this._files)
+        {
+            foreach (var customType in fileInfo.ProtoBodyInfos)
+            {
+                if (customType.RealName == realName)
+                {
+                    return customType;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private List<ProtoField> GetDefaultFields(string type)
     {
         var res = new List<ProtoField>()
         {
@@ -593,12 +634,12 @@ using UnityEngine.UIElements;
         private ProtoBodyInfo _curBody;
         private long _length;
 
-        public List<string> GetTypes(params ProtoMsgType[] types)
+        public List<string> GetTypes(params string[] types)
         {
             var res = new List<string>();
             foreach (var customType in this._customTypes)
             {
-                foreach (ProtoMsgType type in types)
+                foreach (string type in types)
                 {
                     if (customType.MessageType == type)
                     {
@@ -669,7 +710,7 @@ using UnityEngine.UIElements;
                         if (line.StartsWith("//"))
                         {
                             if (line.StartsWith("//ResponseType"))
-                                this._curBody.ResponseType = line.Replace("//ResponseType", "").Trim();
+                                this._curBody.ResponseName = line.Replace("//ResponseType", "").Trim();
                             else 
                             {
                                 if (!this._isMainBody)
@@ -682,53 +723,35 @@ using UnityEngine.UIElements;
                             if (!this._customTypes.Contains(this._curBody))
                                 this._customTypes.Add(this._curBody);
                             if (ss.Length == 1)
-                                this._curBody.MessageType = ProtoMsgType.None;
+                                this._curBody.MessageType = "None";
                             else
                             {
-                                this._curBody.MessageType = (ProtoMsgType) Enum.Parse(typeof (ProtoMsgType), ss[1].Trim());
+                                this._curBody.MessageType = ss[1].Trim();
                             }
 
                             var realName = ss[0].Trim();
                             var nameResult = realName;
-                            switch (this._curBody.MessageType)
+                            if (this._curBody.MessageType == "None")
                             {
-                                case ProtoMsgType.None:
-                                    break;
-                                case ProtoMsgType.IRequest:
-                                    nameResult = nameResult.Replace("Request", "");
-                                    break;
-                                case ProtoMsgType.IActorRequest:
-                                    nameResult = nameResult.Replace("ARequest", "");
-                                    nameResult = nameResult.Replace("Request", "");
-                                    break;
-                                case ProtoMsgType.IActorLocationRequest:
-                                    nameResult = nameResult.Replace("ALRequest", "");
-                                    nameResult = nameResult.Replace("Request", "");
-                                    break;
-                                case ProtoMsgType.IResponse:
-                                    nameResult = nameResult.Replace("Response", "");
-                                    break;
-                                case ProtoMsgType.IActorResponse:
-                                    nameResult = nameResult.Replace("AResponse", "");
-                                    nameResult = nameResult.Replace("Response", "");
-                                    break;
-                                case ProtoMsgType.IActorLocationResponse:
-                                    nameResult = nameResult.Replace("ALResponse", "");
-                                    nameResult = nameResult.Replace("Response", "");
-                                    break;
-                                case ProtoMsgType.IMessage:
-                                    nameResult = nameResult.Replace("Message", "");
-                                    break;
-                                case ProtoMsgType.IActorMessage:
-                                    nameResult = nameResult.Replace("AMessage", "");
-                                    nameResult = nameResult.Replace("Message", "");
-                                    break;
-                                case ProtoMsgType.IActorLocationMessage:
-                                    nameResult = nameResult.Replace("ALMessage", "");
-                                    nameResult = nameResult.Replace("Message", "");
-                                    break;
                             }
-
+                            else if (this._curBody.MessageType.EndsWith("Request"))
+                            {
+                                nameResult = nameResult.Replace("ALRequest", "");
+                                nameResult = nameResult.Replace("ARequest", "");
+                                nameResult = nameResult.Replace("Request", "");
+                            }
+                            else if (this._curBody.MessageType.EndsWith("Response"))
+                            {
+                                nameResult = nameResult.Replace("ALResponse", "");
+                                nameResult = nameResult.Replace("AResponse", "");
+                                nameResult = nameResult.Replace("Response", "");
+                            }
+                            else if (this._curBody.MessageType.EndsWith("Message"))
+                            {
+                                nameResult = nameResult.Replace("ALMessage", "");
+                                nameResult = nameResult.Replace("AMessage", "");
+                                nameResult = nameResult.Replace("Message", "");
+                            }
                             this._curBody.Name = nameResult;
                         }else if (line == "{")
                         {
@@ -820,9 +843,9 @@ using UnityEngine.UIElements;
                     lines.Add("/// </summary>");
                 }
 
-                if (!string.IsNullOrEmpty(protoBodyInfo.ResponseType))
-                    lines.Add($"//ResponseType {protoBodyInfo.ResponseType}");
-                lines.Add($"message {protoBodyInfo.RealName}{(protoBodyInfo.MessageType == ProtoMsgType.None ? "" : $" // {protoBodyInfo.MessageType.ToString()}")}");
+                if (!string.IsNullOrEmpty(protoBodyInfo.ResponseName))
+                    lines.Add($"//ResponseType {protoBodyInfo.ResponseName}");
+                lines.Add($"message {protoBodyInfo.RealName}{(protoBodyInfo.MessageType == "None" ? "" : $" // {protoBodyInfo.MessageType.ToString()}")}");
                 lines.Add("{");
                 foreach (ProtoField protoField in protoBodyInfo.Fields)
                 {
@@ -914,28 +937,57 @@ using UnityEngine.UIElements;
         {
             get
             {
-                switch (this.MessageType)
+                if (this.MessageType == "None")
                 {
-                    case ProtoMsgType.None:
-                        return this.Name;
-                    case ProtoMsgType.IRequest:
-                        return $"{this.Name}Request";
-                    case ProtoMsgType.IActorRequest:
-                        return $"{this.Name}ARequest";
-                    case ProtoMsgType.IActorLocationRequest:
+                    return this.Name;
+                }
+
+                var baseType = typeof (IMessage);
+                var type = baseType.Module.GetType($"ET.{this.MessageType}");
+                var interfaces = type.GetInterfaces();
+                if (this.MessageType.EndsWith("Request"))
+                {
+                    if (type == typeof (IActorLocationRequest) || interfaces.Contains(typeof (IActorLocationRequest)))
+                    {
                         return $"{this.Name}ALRequest";
-                    case ProtoMsgType.IResponse:
-                        return $"{this.Name}Response";
-                    case ProtoMsgType.IActorResponse:
-                        return $"{this.Name}AResponse";
-                    case ProtoMsgType.IActorLocationResponse:
+                    }
+
+                    if (type == typeof (IActorRequest) || interfaces.Contains(typeof (IActorRequest)))
+                    {
+                        return $"{this.Name}ARequest";
+                    }
+
+                    return $"{this.Name}Request";
+                }
+
+                if (this.MessageType.EndsWith("Response"))
+                {
+                    if (type == typeof (IActorLocationResponse) || interfaces.Contains(typeof (IActorLocationResponse)))
+                    {
                         return $"{this.Name}ALResponse";
-                    case ProtoMsgType.IMessage:
-                        return $"{this.Name}Message";
-                    case ProtoMsgType.IActorMessage:
-                        return $"{this.Name}AMessage";
-                    case ProtoMsgType.IActorLocationMessage:
+                    }
+
+                    if (type == typeof (IActorResponse) || interfaces.Contains(typeof (IActorResponse)))
+                    {
+                        return $"{this.Name}AResponse";
+                    }
+
+                    return $"{this.Name}Response";
+                }
+
+                if (this.MessageType.EndsWith("Message"))
+                {
+                    if (type == typeof (IActorLocationMessage) || interfaces.Contains(typeof (IActorLocationMessage)))
+                    {
                         return $"{this.Name}ALMessage";
+                    }
+
+                    if (type == typeof (IActorMessage) || interfaces.Contains(typeof (IActorMessage)))
+                    {
+                        return $"{this.Name}AMessage";
+                    }
+
+                    return $"{this.Name}Message";
                 }
 
                 return this.Name;
@@ -951,8 +1003,8 @@ using UnityEngine.UIElements;
         public List<string> Notes = new List<string>();
         public List<string> MutiNotes = new List<string>();
         public List<ProtoField> Fields = new List<ProtoField>();
-        public ProtoMsgType MessageType;
-        public string ResponseType;
+        public string MessageType = "None";
+        public string ResponseName;
     }
     
     [Serializable]
@@ -968,19 +1020,19 @@ using UnityEngine.UIElements;
         public bool IsUnityType;
     }
 
-    public enum ProtoMsgType
-    {
-        None,
-        IActorRequest,
-        IActorResponse,
-        IActorMessage,
-        IActorLocationRequest,
-        IActorLocationResponse,
-        IActorLocationMessage,
-        IRequest,
-        IResponse,
-        IMessage,
-    }
+    // public enum ProtoMsgType
+    // {
+    //     None,
+    //     IActorRequest,
+    //     IActorResponse,
+    //     IActorMessage,
+    //     IActorLocationRequest,
+    //     IActorLocationResponse,
+    //     IActorLocationMessage,
+    //     IRequest,
+    //     IResponse,
+    //     IMessage,
+    // }
     
     public enum StructType
     {
