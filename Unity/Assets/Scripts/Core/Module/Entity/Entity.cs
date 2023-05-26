@@ -99,10 +99,10 @@ namespace ET
         }
 
         [BsonIgnore]
-        private bool IsComponent
+        public bool IsComponent
         {
             get => (this.status & EntityStatus.IsComponent) == EntityStatus.IsComponent;
-            set
+            private set
             {
                 if (value)
                 {

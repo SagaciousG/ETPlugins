@@ -5,8 +5,12 @@
         "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Codes",
-        "Unity.TextMeshPro"
+        "Unity.Model.Codes",
+        "Unity.ModelView.Codes",
+        "Unity.TextMeshPro",
+        "Unity.Hotfix.Codes",
+        "Unity.HotfixView.Codes",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"
@@ -14,7 +18,9 @@
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        ""
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

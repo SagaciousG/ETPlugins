@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
+using XGame;
 
 namespace ET
 {
@@ -12,7 +14,7 @@ namespace ET
         {
             var argTypes = memberType.GetGenericArguments();
             var state = GUIElementStateManager.Add(GUIElementStateDomain.ComponentView, value);
-            state[1] = EditorGUILayout.Foldout(state[1], $"{memberName} {memberType.Name} {argTypes[0].Name}", "FoldoutHeader");
+            state[1] = GUILayoutHelper.Foldout(state[1], new GUIContent($"{memberName} {memberType.Name} {argTypes[0].Name}"));
             if (state[1])
             {
                 EditorGUILayout.BeginVertical("FrameBox");
@@ -20,7 +22,7 @@ namespace ET
                 var index = 0;
                 foreach (var val in list)
                 {
-                    ComponentViewHelper.Draw(argTypes[0], val, $"{index++}");
+                    TypeDrawHelper.Draw(argTypes[0], val, $"{index++}");
                 }
                 EditorGUILayout.EndVertical();
             }

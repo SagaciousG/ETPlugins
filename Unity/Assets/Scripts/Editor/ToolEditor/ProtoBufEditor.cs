@@ -6,11 +6,8 @@ using System.Linq;
  using System.Text.RegularExpressions;
  using ET;
  using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEditorInternal;
+ using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
  using XGame;
 
  public class ProtoBufEditor : EditorWindow
@@ -67,7 +64,6 @@ using UnityEngine.UIElements;
         this._msgType2Keys[nameof (IActorResponse)]         = new[] { "int32|Error|91", "string|Message|92" };
         this._msgType2Keys[nameof (IResponse)]              = new[] { "int32|Error|91", "string|Message|92" };
         this._msgType2Keys[nameof (IActorLocationResponse)] = new[] { "int32|Error|91", "string|Message|92" };
-        this._msgType2Keys[nameof (ICenterResponse)]        = new[] { "int32|Error|91", "string|Message|92" };
         
         this._baseTypes = new List<string>()
         {

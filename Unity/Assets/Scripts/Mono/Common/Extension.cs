@@ -10,6 +10,11 @@ namespace XGame
 {
     public static class Extension
     {
+        public static Vector2 ClampIn(this Rect rect, Vector2 r)
+        {
+            return new Vector2(Mathf.Clamp(r.x, rect.xMin, rect.xMax), Mathf.Clamp(r.y, rect.yMin, rect.yMax));
+        }
+
         
         /// <summary>
         /// 计算一个Vector3绕指定轴旋转指定角度后所得到的向量。
