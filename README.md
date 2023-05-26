@@ -43,4 +43,7 @@ ET版本 7.1 2022-10-07 20:48
 3.支持Dictionary、list、stack
 ### 7.NumericTypeEditor
 ![image](https://user-images.githubusercontent.com/49907344/195549206-973e480b-8659-4be6-a1c7-2a055460089b.png)
+### 8.ETTreeViewr
+![image](https://github.com/SagaciousG/ETPlugins/assets/49907344/adf35d26-af6d-4949-aec6-8cc4e28df0d6)
+
 
