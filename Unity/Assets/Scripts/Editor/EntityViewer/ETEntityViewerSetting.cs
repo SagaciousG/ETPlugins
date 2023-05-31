@@ -9,6 +9,7 @@ namespace ET
         public Color ComponentColor = Color.white;
         public Color ChildColor = Color.white;
 
-        public List<string> QuickFlags;
+        public List<string> QuickFlags = new();
+        public List<string> FoldNodes = new();
     }
 }

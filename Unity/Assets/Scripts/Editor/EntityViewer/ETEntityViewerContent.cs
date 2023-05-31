@@ -10,6 +10,10 @@ namespace ET
         private static int _windowRoot = 10000;
         private static bool _turnToCurrent;
         private static bool _buildTree;
+        private static Node _rootNode;
+        private static Node _clientNode;
+        private static Node _serverNode;
+        
         private class Content : AAreaBase
         {
             private Vector2 _paddingMin = new Vector2(40, 40);
@@ -34,7 +38,9 @@ namespace ET
             private void BuildTree()
             {
                 if (_currentRoot == null)
+                {
                     _currentRoot = this.SetNode(Root.Instance.Scene, null, 0, 0);
+                }
                 else
                     _currentRoot = this.SetNode(_currentRoot.Entity, null, 0, 0);
                     
@@ -172,6 +178,12 @@ namespace ET
                 if (parent != null)
                     parent.Children.Add(node);
                 var idx = 0;
+                if (node.Entity is ClientSceneManagerComponent)
+                    _clientNode = node;
+                else if (node.Entity is ServerSceneManagerComponent)
+                    _serverNode = node;
+                else if (node.Entity == Root.Instance.Scene)
+                    _rootNode = node;
                 foreach (Entity child in entity.Components.Values)
                 {
                     SetNode(child, node, depth + 1, idx);
@@ -188,7 +200,7 @@ namespace ET
 
             private void CalNode(Node node, ref float height)
             {
-                if (node.Children.Count > 0)
+                if (node.Children.Count > 0 && !node.Fold)
                 {
                     var all = 0f;
                     foreach (Node child in node.Children)
@@ -209,15 +221,38 @@ namespace ET
             {
                 node.OnGUI(this._paddingMin, this._posMin);
                 var start = new Vector2(node.Depth * 230 + 180, 60 * node.Height + 20) + this._paddingMin;
-                foreach (var child in node.Children)
+                var btnRect = new Rect(start - Vector2.up * 15, Vector2.one * 30);
+                if (!node.Fold)
                 {
-                    DrawNode(child);
-                    var end = new Vector2(child.Depth * 230, 60 * child.Height + 20) + this._paddingMin;
-                    Handles.DrawBezier(start, end, start + Vector2.right * 50, end + Vector2.left * 50, Color.white, null, 2);
+                    foreach (var child in node.Children)
+                    {
+                        DrawNode(child);
+                        var end = new Vector2(child.Depth * 230, 60 * child.Height + 20) + this._paddingMin;
+                        Handles.DrawBezier(start, end, start + Vector2.right * 50, end + Vector2.left * 50, Color.white, null, 2);
+                    }
+                    this._maxDepth = Mathf.Max(this._maxDepth, node.Depth);
+                    this._maxHeight = Mathf.Max(this._maxHeight, node.Height);
+                    if (node.Children.Count > 0)
+                    {
+                        if (GUI.Button(btnRect, EditorGUIUtility.IconContent("winbtn_mac_min_h"), EditorStyles.iconButton))
+                        {
+                            Setting.FoldNodes.Add($"{node.Entity.GetType().Name}_{node.Entity.Id}");
+                            this.BuildTree();
+                        }
+                    }
+                }
+                else
+                {
+                    if (node.Children.Count > 0)
+                    {
+                        if (GUI.Button(btnRect, EditorGUIUtility.IconContent("winbtn_mac_max_h"), EditorStyles.iconButton))
+                        {
+                            Setting.FoldNodes.Remove($"{node.Entity.GetType().Name}_{node.Entity.Id}");
+                            this.BuildTree();
+                        }
+                    }
                 }
 
-                this._maxDepth = Mathf.Max(this._maxDepth, node.Depth);
-                this._maxHeight = Mathf.Max(this._maxHeight, node.Height);
             }
             
             private Rect GetRootWindow()

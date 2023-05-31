@@ -94,7 +94,8 @@ namespace ET
 
         private void Update()
         {
-            this.Repaint();
+            if (this.hasFocus)
+                this.Repaint();
         }
 
         private void OnGUI()

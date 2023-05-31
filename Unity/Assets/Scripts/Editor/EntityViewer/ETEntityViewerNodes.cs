@@ -46,6 +46,14 @@ namespace ET
             public float Height;
             public Entity Entity;
             public List<Node> Children = new List<Node>();
+
+            public bool Fold
+            {
+                get
+                {
+                    return Setting.FoldNodes.Contains($"{this.Entity.GetType().Name}_{this.Entity.Id}");
+                }
+            }
             public int WindowID { get; private set; }
             private Rect _position;
 
@@ -61,6 +69,22 @@ namespace ET
                     return winName;
                 }
             }
+
+            public SearchDomain Domain
+            {
+                get
+                {
+                    if (FindInParent(_clientNode, this))
+                    {
+                        return SearchDomain.Client;
+                    }
+
+                    if (FindInParent(_serverNode, this))
+                        return SearchDomain.Server;
+                    return SearchDomain.All;
+                }
+            }
+
             public void OnGUI(Vector2 padding, Vector2 posMin)
             {
                 var pos = new Vector2(this.Depth * 230, 60 * this.Height);
